@@ -12,10 +12,11 @@ class MessagesController < ApplicationController
     # end
 
     def send_sms
+        dst, text = message_params.values_at(:To, :Text)
         response = API.messages.create(
             '16282683456',
-            %w[12106729886],
-            'Send test 3!'
+            [dst],
+            text
           )
         puts response.message_uuid
     end
@@ -26,4 +27,10 @@ class MessagesController < ApplicationController
         text = params[:Text]
         puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
     end
+
+    private
+
+        def message_params
+            params.require(:message).permit(:To, :Text)
+        end
 end
