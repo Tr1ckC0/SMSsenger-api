@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
         response = API.messages.create(
             '16282683456',
             %w[12106729886],
-            'Send test 2!'
+            'Send test 3!'
           )
         puts response.message_uuid
     end
