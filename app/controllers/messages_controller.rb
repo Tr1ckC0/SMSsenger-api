@@ -17,6 +17,7 @@ class MessagesController < ApplicationController
   end
 
   def receive_sms
+    message = Message.new(message_params)
     from_number = params[:From]
     to_number = params[:To]
     text = params[:Text]
