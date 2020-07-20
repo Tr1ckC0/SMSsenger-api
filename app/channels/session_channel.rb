@@ -7,7 +7,7 @@ class SessionChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def received (data)
+  # def received (data)
 
-  end
+  # end
 end

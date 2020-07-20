@@ -3,30 +3,44 @@ class MessagesController < ApplicationController
   API = RestClient.new(PLIVO_ID, PLIVO_TOKEN)
 
   def index
-    render json: "Hello from SMSsenger!"
+    messages = Message.all
+    render json: messages
   end
 
   def send_sms
-    dst, text = message_params.values_at(:To, :Text)
-    response = API.messages.create(
-      "16282683456",
-      [dst],
-      text
-    )
-    puts response.message_uuid
+    to, text = message_params(:To, :Text).values_at(:To, :Text)
+    message = Message.new(to: to, text: text, from: "16282683456")
+
+    if message.save
+      response = API.messages.create(
+       "16282683456",
+        [to],
+        text
+      )
+    
+      binding.pry
+      message.update(message_uuid: response.message_uuid[0])
+    end
+    # can add a status callback later
   end
 
   def receive_sms
-    message = Message.new(message_params)
-    from_number = params[:From]
-    to_number = params[:To]
-    text = params[:Text]
-    puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
+    binding.pry
+    # message = Message.new(message_params)
+
+    # if message.save
+    #   ActionCable.server.broadcast 'session_channel', message
+    # end
+    # from_number = params[:From]
+    # to_number = params[:To]
+    # uuid = params[:MessageUUID]
+    # text = params[:Text]
+    # puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
   end
 
   private
 
-  def message_params
-    params.require(:message).permit(:To, :Text)
+  def message_params(*args)
+    params.require(:message).permit(*args)
   end
 end
