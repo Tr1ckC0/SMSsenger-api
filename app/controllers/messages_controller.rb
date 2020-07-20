@@ -17,25 +17,18 @@ class MessagesController < ApplicationController
         [to],
         text
       )
-    
-      binding.pry
+      
       message.update(message_uuid: response.message_uuid[0])
     end
     # can add a status callback later
   end
 
   def receive_sms
-    binding.pry
-    # message = Message.new(message_params)
-
-    # if message.save
-    #   ActionCable.server.broadcast 'session_channel', message
-    # end
-    # from_number = params[:From]
-    # to_number = params[:To]
-    # uuid = params[:MessageUUID]
-    # text = params[:Text]
-    # puts "Message received - From: #{from_number}, To: #{to_number}, Text: #{text}"
+    from, to, msg_id, text = params.values_at(:From, :To, :MessageUUID, :Text) 
+    message = Message.new(to: to, from: from, message_uuid: msg_id, text: text)
+    if message.save
+      ActionCable.server.broadcast 'session_channel', message
+    end
   end
 
   private
