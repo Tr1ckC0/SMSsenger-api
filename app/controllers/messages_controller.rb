@@ -19,8 +19,16 @@ class MessagesController < ApplicationController
       )
       
       message.update(message_uuid: response.message_uuid[0])
-    end
-    # can add a status callback later
+    end # can add a status callback later
+  end
+
+
+  def history
+    response = API.messages.list(message_time__gte: params[:start], message_time__lte: params[:end], limit: 10, offset:0)
+    ids = response[:objects].map {|msg| msg.message_uuid}
+    messages = ids.map {|id| Message.find_by(message_uuid: id)}.select {|msg| !!msg}
+
+    render json: messages
   end
 
   def receive_sms
