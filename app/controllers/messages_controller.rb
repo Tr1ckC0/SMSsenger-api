@@ -28,7 +28,8 @@ class MessagesController < ApplicationController
       )
       
       message.update(message_uuid: response.message_uuid[0])
-    end # can add a status callback later
+      render json: message
+    end 
   end
 
   def receive_sms
