@@ -18,11 +18,11 @@ class MessagesController < ApplicationController
 
   def send_sms
     to, text = message_params(:To, :Text).values_at(:To, :Text)
-    message = Message.new(to: to, text: text, from: "16282683456")
+    message = Message.new(to: to, text: text, from: PLIVO_NUMBER)
 
     if message.save
       response = API.messages.create(
-       "16282683456",
+       PLIVO_NUMBER,
         [to],
         text
       )
