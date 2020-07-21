@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
 
   def receive_sms
     from, to, msg_id, text = params.values_at(:From, :To, :MessageUUID, :Text) 
-    message = Message.new(to: to, from: from, message_uuid: msg_id, text: text)
+    message = Message.new(to: to, from: from, message_uuid: msg_id, text: text, received: true)
     if message.save
       ActionCable.server.broadcast 'session_channel', message
     end
