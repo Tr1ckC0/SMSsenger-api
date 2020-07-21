@@ -5,6 +5,7 @@ class CreateMessages < ActiveRecord::Migration[6.0]
       t.string :to
       t.string :from
       t.string :text
+      t.boolean :received, :default => false 
       # t.string :message_time
       # t.string :sent_time
 

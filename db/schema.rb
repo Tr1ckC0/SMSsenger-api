@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_07_19_191922) do
     t.string "to"
     t.string "from"
     t.string "text"
+    t.boolean "received", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
